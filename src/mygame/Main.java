@@ -275,75 +275,76 @@ public class Main extends SimpleApplication {
                                 /*
                                  * We compute the width
                                  */
-                                for(w = 1; i + w < CHUNK_WIDTH && mask[n + w] != null && mask[n + w].equals(mask[n]); w++) {}
+                                for(w = 1; i + w < CHUNK_WIDTH && mask[n + w] != null && mask[n + w].equals(mask[n]); w++)
+                                {
 
-                                /*
-                                 * Then we compute height
-                                 */
-                                boolean done = false;
+	                                /*
+	                                 * Then we compute height
+	                                 */
+	                                boolean done = false;
 
-                                for(h = 1; j + h < CHUNK_HEIGHT; h++) {
+	                                for(h = 1; j + h < CHUNK_HEIGHT; h++) {
 
-                                    for(k = 0; k < w; k++) {
+	                                    for(k = 0; k < w; k++) {
 
-                                        if(mask[n + k + h * CHUNK_WIDTH] == null || !mask[n + k + h * CHUNK_WIDTH].equals(mask[n])) { done = true; break; }
-                                    }
+	                                        if(mask[n + k + h * CHUNK_WIDTH] == null || !mask[n + k + h * CHUNK_WIDTH].equals(mask[n])) { done = true; break; }
+	                                    }
 
-                                    if(done) { break; }
-                                }
+	                                    if(done) { break; }
+	                                }
 
-                                /*
-                                 * Here we check the "transparent" attribute in the VoxelFace class to ensure that we don't mesh 
-                                 * any culled faces.
-                                 */
-                                if (!mask[n].transparent) {
-                                    /*
-                                     * Add quad
-                                     */
-                                    x[u] = i;  
-                                    x[v] = j;
+	                                /*
+	                                 * Here we check the "transparent" attribute in the VoxelFace class to ensure that we don't mesh 
+	                                 * any culled faces.
+	                                 */
+	                                if (!mask[n].transparent) {
+	                                    /*
+	                                     * Add quad
+	                                     */
+	                                    x[u] = i;  
+	                                    x[v] = j;
 
-                                    du[0] = 0;
-                                    du[1] = 0;
-                                    du[2] = 0;
-                                    du[u] = w;
+	                                    du[0] = 0;
+	                                    du[1] = 0;
+	                                    du[2] = 0;
+	                                    du[u] = w;
 
-                                    dv[0] = 0;
-                                    dv[1] = 0;
-                                    dv[2] = 0;
-                                    dv[v] = h;
+	                                    dv[0] = 0;
+	                                    dv[1] = 0;
+	                                    dv[2] = 0;
+	                                    dv[v] = h;
 
-                                    /*
-                                     * And here we call the quad function in order to render a merged quad in the scene.
-                                     * 
-                                     * We pass mask[n] to the function, which is an instance of the VoxelFace class containing 
-                                     * all the attributes of the face - which allows for variables to be passed to shaders - for 
-                                     * example lighting values used to create ambient occlusion.
-                                     */
-                                    quad(new Vector3f(x[0],                 x[1],                   x[2]), 
-                                         new Vector3f(x[0] + du[0],         x[1] + du[1],           x[2] + du[2]), 
-                                         new Vector3f(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1],   x[2] + du[2] + dv[2]), 
-                                         new Vector3f(x[0] + dv[0],         x[1] + dv[1],           x[2] + dv[2]), 
-                                         w,
-                                         h,
-                                         mask[n],
-                                         backFace);
-                                }
+	                                    /*
+	                                     * And here we call the quad function in order to render a merged quad in the scene.
+	                                     * 
+	                                     * We pass mask[n] to the function, which is an instance of the VoxelFace class containing 
+	                                     * all the attributes of the face - which allows for variables to be passed to shaders - for 
+	                                     * example lighting values used to create ambient occlusion.
+	                                     */
+	                                    quad(new Vector3f(x[0],                 x[1],                   x[2]), 
+	                                         new Vector3f(x[0] + du[0],         x[1] + du[1],           x[2] + du[2]), 
+	                                         new Vector3f(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1],   x[2] + du[2] + dv[2]), 
+	                                         new Vector3f(x[0] + dv[0],         x[1] + dv[1],           x[2] + dv[2]), 
+	                                         w,
+	                                         h,
+	                                         mask[n],
+	                                         backFace);
+	                                }
 
-                                /*
-                                 * We zero out the mask
-                                 */
-                                for(l = 0; l < h; ++l) {
+	                                /*
+	                                 * We zero out the mask
+	                                 */
+	                                for(l = 0; l < h; ++l) {
 
-                                    for(k = 0; k < w; ++k) { mask[n + k + l * CHUNK_WIDTH] = null; }
-                                }
+	                                    for(k = 0; k < w; ++k) { mask[n + k + l * CHUNK_WIDTH] = null; }
+	                                }
 
-                                /*
-                                 * And then finally increment the counters and continue
-                                 */
-                                i += w; 
-                                n += w;
-
+	                                /*
+	                                 * And then finally increment the counters and continue
+	                                 */
+	                                i += w; 
+	                                n += w;
+                            	}
                             } else {
 
                               i++;
